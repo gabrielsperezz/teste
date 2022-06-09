@@ -2,7 +2,11 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Config;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -47,4 +51,23 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param $request
+     * @param Throwable $e
+     * @return JsonResponse
+     * @throws Throwable
+     */
+    public function render($request, Throwable $e)
+    {
+        switch (get_class($e)) {
+            case EntityNotFoundException::class:
+                return new JsonResponse(0, Response::HTTP_NOT_FOUND);
+            default:
+                return parent::render($request, $e);
+        }
+    }
+
 }

@@ -14,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('reset', ['uses' => 'Controller@reset'])->name('account.reset');
+Route::get('balance', ['uses' => 'Controller@balance'])->name('account.balance');
+Route::post('event', ['uses' => 'Controller@event'])->name('account.event');
